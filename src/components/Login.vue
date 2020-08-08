@@ -19,7 +19,7 @@
   import { requestLogin } from '@/api/api';
   import NProgress from 'nprogress'
   import MenuUtils from '@/utils/MenuUtils'
-  var routers = []
+  var routers = [];
   export default {
     data() {
       return {
