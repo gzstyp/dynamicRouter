@@ -16,9 +16,9 @@
 </template>
 
 <script>
-  import { requestLogin } from '@/api/api';
+  import {requestLogin} from '@/api/api';
   import NProgress from 'nprogress'
-  import MenuUtils from '@/utils/MenuUtils'
+  import MenuUtils from '@/utils/MenuUtils'; //此js主要用于处理成component组件,即把字符串转为component组件
   var routers = [];
   export default {
     data() {
@@ -46,8 +46,12 @@
         this.$refs.ruleForm2.resetFields();
       },
       login(data){
-        window.sessionStorage.setItem('user',JSON.stringify(data));//存入登录信息
-        MenuUtils(routers,data);
+        window.sessionStorage.setItem('user',JSON.stringify(data));//这里是存入本地菜单信息
+        console.info(routers);//空值
+        MenuUtils(routers,data);//组装路由导航菜单,处理成component组件,即把字符串转为component组件
+        console.info(routers);
+        this.$router.addRoutes(routers);//添加到动态路由
+        this.$router.push({ path: '/main' });//跳转页面
       },
       handleSubmit2(ev) {
         var _this = this;
@@ -56,24 +60,21 @@
             this.logining = true;
             NProgress.start();
             var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
-            requestLogin(loginParams).then(res => {
+            requestLogin(loginParams).then(result => {
               this.logining = false;
               NProgress.done();
-              let { errno, data } = res;
-              if (errno !== 0) {
+              let { code, data } = result;//执行登录后会返回json数据格式;第一个参数类似于状态码,code,第二个是数据或错误信息!!!详情移入到模拟登录方法
+              if (code !== 200) {
                 this.$notify({
                   title: '错误',
-                  message: errno,
+                  message: data,
                   type: 'error'
                 });
               } else {
-                this.login(data);//把账号信息保存
-                this.$router.addRoutes(routers);
-                this.$router.push({ path: '/main' });//跳转页面
+                this.login(data);//传入菜单数据
               }
             });
           } else {
-            console.log('error submit!!');
             return false;
           }
         });

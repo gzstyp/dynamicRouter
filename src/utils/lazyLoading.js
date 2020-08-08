@@ -1,1 +1,1 @@
-export default (name) => () => import(`@/components/${name}.vue`);//指定组件vue页面名称
+export default (name) => () => import(`@/components/${name}.vue`);//指定组件vue页面名称,处理成component组件,即把字符串转为component组件

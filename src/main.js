@@ -3,11 +3,11 @@ import App from './App';
 import router from './router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
-import MenuUtils from '@/utils/MenuUtils';
+import MenuUtils from '@/utils/MenuUtils'; //处理动态路由
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
-let data = JSON.parse(window.sessionStorage.getItem('user'));
+let data = JSON.parse(window.sessionStorage.getItem('user'));//用户信息(含菜单数据)
 if (data){
   //这里是防止用户手动刷新页面，整个app要重新加载,动态新增的路由，会消失，所以我们重新add一次
   let routes = [];

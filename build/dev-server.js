@@ -1,20 +1,18 @@
 'use strict'
-require('./check-versions')()
+require('./check-versions')();
 
-const config = require('../config')
+const config = require('../config');
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 
-const opn = require('opn')
-const path = require('path')
-const express = require('express')
-const bodyParser = require('body-parser')
-const webpack = require('webpack')
+const opn = require('opn');
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const webpack = require('webpack');
 const proxyMiddleware = require('http-proxy-middleware')
-const webpackConfig = (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'production')
-  ? require('./webpack.prod.conf')
-  : require('./webpack.dev.conf')
+const webpackConfig = (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'production') ? require('./webpack.prod.conf') : require('./webpack.dev.conf');
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
@@ -24,8 +22,8 @@ const autoOpenBrowser = !!config.dev.autoOpenBrowser
 // https://github.com/chimurai/http-proxy-middleware
 const proxyTable = config.dev.proxyTable
 
-const app = express()
-const compiler = webpack(webpackConfig)
+const app = express();
+const compiler = webpack(webpackConfig);
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
@@ -48,11 +46,11 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
 
 // enable hot-reload and state-preserving
 // compilation error display
-app.use(hotMiddleware)
+app.use(hotMiddleware);
 
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {
-  const options = proxyTable[context]
+  var options = proxyTable[context]
   if (typeof options === 'string') {
     options = { target: options }
   }
@@ -60,7 +58,7 @@ Object.keys(proxyTable).forEach(function (context) {
 })
 
 // handle fallback for HTML5 history API
-app.use(require('connect-history-api-fallback')())
+app.use(require('connect-history-api-fallback')());
 
 // serve webpack bundle output
 app.use(devMiddleware)
@@ -71,27 +69,27 @@ app.use(staticPath, express.static('./static'))
 
 
 //一些基础数据的配置
-const appData = require('./data.json')
+const appData = require('./data.json');
 const menus = appData.menus
-const apiRouters = express.Router()
-app.use(bodyParser.json())
-apiRouters.post('/adminLogin', (req, res) => {
+const apiRouters = express.Router();
+app.use(bodyParser.json());
+//执行登录操作(模拟登录),它会返回json数据格式
+apiRouters.post('/adminLogin',(req, res) => {
   if(req.body.username==='admin'&&req.body.password==='admin'){
     res.json({
-      errno: 0,
+      code: 200,
       data: menus
-    })
+    });
   }else{
     res.json({
-      errno: 100,
+      code: 199,
       data: '用户名或密码错误'
-    })
+    });
   }
-  
 })
-app.use('/api', apiRouters)
+app.use('/api', apiRouters);
 
-const uri = 'http://localhost:' + port
+const uri = 'http://localhost:' + port;
 
 var _resolve
 var _reject
@@ -108,23 +106,23 @@ console.log('> Starting dev server...')
 devMiddleware.waitUntilValid(() => {
   portfinder.getPort((err, port) => {
     if (err) {
-      _reject(err)
+      _reject(err);
     }
-    process.env.PORT = port
-    var uri = 'http://localhost:' + port
-    console.log('> Listening at ' + uri + '\n')
+    process.env.PORT = port;
+    var uri = 'http://localhost:' + port;
+    console.log('> Listening at ' + uri + '\n');
     // when env is testing, don't need open it
     if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
-      opn(uri)
+      opn(uri);
     }
     server = app.listen(port)
-    _resolve()
+    _resolve();
   })
 })
 
 module.exports = {
   ready: readyPromise,
   close: () => {
-    server.close()
+    server.close();
   }
 }
