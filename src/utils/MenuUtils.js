@@ -7,11 +7,11 @@ export default (routers,data) => {
 function generaMenu(routers,data){
   data.forEach((item)=>{
     let menu = Object.assign({},item);//用于将所有可枚举属性的值从一个或多个源对象[item]复制到目标对象。它将返回目标对象 menu
-    menu.component = lazyLoading(menu.component);
+    menu.component = lazyLoading(menu.component);//指定组件vue页面名称
     if(!item.leaf){//如果不是叶子节点,说明还有子页面!!!
       menu.children = [];
-      generaMenu(menu.children,item.children);
+      generaMenu(menu.children,item.children);//递归
     }
     routers.push(menu);
-  })
+  });
 }
