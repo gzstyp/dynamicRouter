@@ -80,7 +80,6 @@
       }
     }
   }
-
 </script>
 
 <style lang="scss" scoped>
@@ -90,19 +89,23 @@
     border-radius: 5px;
     -moz-border-radius: 5px;
     background-clip: padding-box;
-    margin-bottom: 20px;
     background-color: #F9FAFC;
-    margin: 180px auto;
     border: 2px solid #8492A6;
     width: 350px;
-    padding: 35px 35px 15px 35px;
+    padding: 15px 35px 15px 35px;
+    /*垂直居中*/
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+
     .title {
-      margin: 0px auto 40px auto;
+      margin: 0px auto 15px auto;
       text-align: center;
       color: #505458;
     }
     .remember {
-      margin: 0px 0px 35px 0px;
+      margin-bottom:20px;
     }
   }
 </style>
