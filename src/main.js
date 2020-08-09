@@ -3,7 +3,7 @@ import App from './App';
 import router from './router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
-import MenuUtils from '@/utils/MenuUtils'; //处理动态路由
+import MenuUtils from '@/utils/MenuUtils'; //处理动态路由,把字符串注册成component组件
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
@@ -11,8 +11,8 @@ let data = JSON.parse(window.sessionStorage.getItem('user'));//用户信息(含�
 if (data){
   //这里是防止用户手动刷新页面，整个app要重新加载,动态新增的路由，会消失，所以我们重新add一次
   let routes = [];
-  MenuUtils(routes,data);
-  router.addRoutes(routes);
+  MenuUtils(routes,data);//把字符串注册成component组件
+  router.addRoutes(routes);//添加到路由
   window.sessionStorage.removeItem('isLoadNodes');
 }
 router.beforeEach((route, redirect, next) => {
